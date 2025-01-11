@@ -11,7 +11,7 @@ public class Dev {
 //    Computer computer;
     int age;
     int salary;
-    Laptop laptop;
+    Computer laptop;
 
     Dev(int a, int b){
         System.out.println("dev constructor");
@@ -39,11 +39,11 @@ public class Dev {
     public void setAge(int age) {
         this.age = age;
     }
-    public Laptop getLaptop() {
+    public Computer getLaptop() {
         return laptop;
     }
 
-    public void setLaptop(Laptop laptop) {
+    public void setLaptop(Computer laptop) {
         this.laptop = laptop;
     }
 }
