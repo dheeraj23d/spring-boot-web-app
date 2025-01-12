@@ -3,9 +3,7 @@ package com.dheeraj.demo.controller;
 import com.dheeraj.demo.model.Product;
 import com.dheeraj.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,13 +13,18 @@ public class ProductController {
     @Autowired
     ProductService service;
 
-    @RequestMapping("/products")
+    @GetMapping("/products")
     public List<Product> getProducts(){
         return service.getProducts();
     }
 
-    @RequestMapping("/products/{id}")
+    @GetMapping("/products/{id}")
     public Product getProductsById(@PathVariable int id){
         return service.getProductById(id);
+    }
+
+    @PostMapping("/products")
+    public void addProduct(@RequestBody Product p){
+        service.addProduct(p);
     }
 }

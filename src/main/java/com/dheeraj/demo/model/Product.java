@@ -10,6 +10,15 @@ public class Product {
     private String prodNmme;
     private int price;
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "prodId=" + prodId +
+                ", prodNmme='" + prodNmme + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
     public Product(int prodId, String prodNmme, int price) {
         this.prodId = prodId;
         this.prodNmme = prodNmme;
