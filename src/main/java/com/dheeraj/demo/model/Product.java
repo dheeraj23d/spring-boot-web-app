@@ -1,14 +1,26 @@
 package com.dheeraj.demo.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.EmbeddableInstantiator;
+import org.springframework.stereotype.Component;
 
-@Data
-//@AllArgsConstructor
+@Component
+@Entity
 public class Product {
+    @Id
     private int prodId;
     private String prodNmme;
     private int price;
+
+    public Product() {
+        this.prodId = 0;
+        this.prodNmme = "";
+        this.price = 0;
+    }
 
     @Override
     public String toString() {
