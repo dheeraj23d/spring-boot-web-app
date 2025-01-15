@@ -8,33 +8,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin    // to allow the frontend app to access this app(server) without CORS error (cross-origin resource sharing)
+@RequestMapping("/api")
 public class ProductController {
-
     @Autowired
     ProductService service;
 
+    @RequestMapping("/")
+    public String greet(){
+        return "Hello World";
+    }
+
     @GetMapping("/products")
-    public List<Product> getProducts(){
-        return service.getProducts();
+    public List<Product> getAllProducts(){
+        return service.getAllProducts();
     }
 
-    @GetMapping("/products/{id}")
-    public Product getProductsById(@PathVariable int id){
+    @GetMapping("/product/{id}")
+    public Product getSingleProduct(@PathVariable int id){
         return service.getProductById(id);
-    }
-
-    @PostMapping("/products")
-    public void addProduct(@RequestBody Product p){
-        service.addProduct(p);
-    }
-
-    @PutMapping("/products")
-    public void updateProduct(@RequestBody Product p){
-        service.updateProduct(p);
-    }
-
-    @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable int id){
-        service.deleteProduct(id);
     }
 }
