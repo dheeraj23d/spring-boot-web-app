@@ -1,4 +1,4 @@
-INSERT INTO product (name, description, brand, price, category, releaseDate, available, quantity)
+INSERT INTO product (name, description, brand, price, category, release_Date, product_Available, stock_Quantity)
 VALUES ('Tata Nexon', 'A compact SUV with excellent safety features and performance.', 'Tata Motors', 750000.00, 'Cars',
         '2024-01-15', true, 50),
        ('Maruti Suzuki Swift', 'A popular hatchback known for its fuel efficiency and reliability.', 'Maruti Suzuki',

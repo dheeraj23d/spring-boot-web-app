@@ -1,11 +1,9 @@
 package com.dheeraj.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -26,9 +24,15 @@ public class Product {
     private BigDecimal price;
     private String category;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")  // convert to this format while storing in db
-    @Column(name = "releasedate")
-    private Date releasedate;
-    private int quantity;
-    private boolean available;
+    //handled by new UI-3
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")  // convert to this format while storing in db
+    //@Column(name = "releaseDate")
+    private Date releaseDate;
+    private int stockQuantity;
+    private boolean productAvailable;
+
+    private String imageName;
+    private String imageType;
+    @Lob  // large object
+    private byte[] imageFile;
 }
