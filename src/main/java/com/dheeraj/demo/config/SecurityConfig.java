@@ -14,10 +14,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
-        http.csrf(customizer -> customizer.disable());
-        http.authorizeHttpRequests(req -> req.anyRequest().authenticated());
+        return http.csrf(customizer -> customizer.disable())
+        .authorizeHttpRequests(req -> req.anyRequest().authenticated())
         //http.formLogin(Customizer.withDefaults());
-        http.httpBasic(Customizer.withDefaults());  // in postman we get form html as response for localhost:8080 GET. to make it work in postman too, enable this
+        .httpBasic(Customizer.withDefaults())  // in postman we get form html as response for localhost:8080 GET. to make it work in postman too, enable this
         /*  What It Does
             Purpose: Configures Spring Security to use HTTP Basic authentication for incoming requests.
             Effect: When a client sends a request to a secured endpoint, the server will:
@@ -26,7 +26,7 @@ public class SecurityConfig {
             Authenticate the credentials (usually against an in-memory, database, or external user store).
             The Customizer.withDefaults() is a convenience method that applies default settings for HTTP Basic authentication without requiring additional customization.   */
 
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));   // make http stateless. session id is not needed but each time we need to send the user creds as http headers. we need to disable the form login for this (line no 19)
-        return http.build();
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))   // make http stateless. session id is not needed but each time we need to send the user creds as http headers. we need to disable the form login for this (line no 19)
+        .build();
     }
 }
