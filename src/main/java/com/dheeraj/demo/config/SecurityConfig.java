@@ -1,16 +1,29 @@
 package com.dheeraj.demo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsPasswordService;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration      // mention it as a configuration class
 @EnableWebSecurity  // mention spring to consider this config class upon the config properties file
 public class SecurityConfig {
+
+    @Autowired
+    public UserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
@@ -28,5 +41,32 @@ public class SecurityConfig {
 
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))   // make http stateless. session id is not needed but each time we need to send the user creds as http headers. we need to disable the form login for this (line no 19)
         .build();
+    }
+
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        UserDetails user1 = User
+//                .withDefaultPasswordEncoder()
+//                .username("kiran")
+//                .password("k@123")
+//                .roles("User")
+//                .build();
+//
+//        UserDetails user2 = User
+//                .withDefaultPasswordEncoder()
+//                .username("Dheeraj")
+//                .password("d@123")
+//                .roles("Admin")
+//                .build();
+//        return new InMemoryUserDetailsManager(user1, user2);
+//    }
+
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        provider.setUserDetailsService(userDetailsService);
+        return provider;
     }
 }
