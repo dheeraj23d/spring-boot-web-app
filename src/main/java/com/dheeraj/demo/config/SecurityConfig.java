@@ -3,9 +3,11 @@ package com.dheeraj.demo.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,7 +31,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         return http.csrf(customizer -> customizer.disable())
-        .authorizeHttpRequests(req -> req.anyRequest().authenticated())
+        .authorizeHttpRequests(req -> req
+                .requestMatchers("register", "login")   // excluding these 2 web pages/paths from authentication as they should be served without user authentication
+                .permitAll()
+                .anyRequest().authenticated())
         //http.formLogin(Customizer.withDefaults());
         .httpBasic(Customizer.withDefaults())  // in postman we get form html as response for localhost:8080 GET. to make it work in postman too, enable this
         /*  What It Does
@@ -69,5 +74,10 @@ public class SecurityConfig {
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));     // validating the password by creating user given password to hash with 12 strength and comparing it
         provider.setUserDetailsService(userDetailsService);
         return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }
