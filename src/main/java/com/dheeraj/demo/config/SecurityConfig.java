@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration      // mention it as a configuration class
 @EnableWebSecurity  // mention spring to consider this config class upon the config properties file
@@ -26,6 +27,9 @@ public class SecurityConfig {
 
     @Autowired
     public UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -46,6 +50,7 @@ public class SecurityConfig {
             The Customizer.withDefaults() is a convenience method that applies default settings for HTTP Basic authentication without requiring additional customization.   */
 
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))   // make http stateless. session id is not needed but each time we need to send the user creds as http headers. we need to disable the form login for this (line no 19)
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)     // adds jwt filter before username password authentication. if berar token is passed, we pick it
         .build();
     }
 
